@@ -25,41 +25,41 @@ prereq(course id, prereq id)
 1.a.
 
 SELECT			DISTINCT student.name
-FROM				student
+FROM			student
 	NATURAL JOIN	takes
-		ON		student.ID = takes.ID
+	ON		student.ID = takes.ID
 	NATURAL JOIN	course
-		ON		takes.course_id = course.course_id
+	ON		takes.course_id = course.course_id
 WHERE			course.dept_name = ‘Comp. Sci.’
 ;
 
 1.b.
 
 SELECT				student.name
-,					student.ID
-,					COUNT(takes.ID) AS taken_before_2009
+,				student.ID
+,				COUNT(takes.ID) AS taken_before_2009
 FROM				student
-	LEFT OUTER JOIN	takes
-		ON			student.ID = takes.ID
+	LEFT OUTER JOIN		takes
+	ON			student.ID = takes.ID
 WHERE				takes.year < 2009
 GROUP BY			student.name
-,					student.ID
+,				student.ID
 HAVING				COUNT(takes.ID) = 0
 ;
 
 1.c
 
 SELECT			dept_name
-,				MAX(salary)
+,			MAX(salary)
 FROM			instructor
 GROUP BY		dept_name
 
 1.d
 
 SELECT			MIN(max_salary) AS min_max_salary
-FROM				(
+FROM	(
 	SELECT			dept_name
-	,				MAX(salary) AS max_salary
+	,			MAX(salary) AS max_salary
 	FROM			instructor
 	GROUP BY		dept_name
 	)
