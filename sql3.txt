@@ -23,23 +23,23 @@ WHERE	postal_code LIKE '1%1'
 4.2
 
 SELECT 				yelp_academic_dataset_business.name
-, 					COUNT(yelp_academic_dataset_checkin.business_id)
-FROM					yelp_academic_dataset_business	
+, 				COUNT(yelp_academic_dataset_checkin.business_id)
+FROM				yelp_academic_dataset_business	
 	LEFT OUTER JOIN		yelp_academic_dataset_checkin
-	ON 	yelp_academic_dataset_business.business_id =
-		yelp_academic_dataset_checkin.business_id
+	ON 			yelp_academic_dataset_business.business_id =
+				yelp_academic_dataset_checkin.business_id
 WHERE				yelp_academic_dataset_business.state = 'NY'
-GROUP BY				yelp_academic_dataset_business.name
-ORDER BY				COUNT(yelp_academic_dataset_checkin.business_id) DESC
+GROUP BY			yelp_academic_dataset_business.name
+ORDER BY			COUNT(yelp_academic_dataset_checkin.business_id) DESC
 ;
 
 4.3
 
 SELECT		city
-, 			state
-, 			COUNT(business_id) AS restaurant_count
-FROM			yelp_academic_dataset_business
-GROUP BY		city
-, 			state
-ORDER BY		COUNT(business_id) DESC
+, 		state
+, 		COUNT(business_id) AS restaurant_count
+FROM		yelp_academic_dataset_business
+GROUP BY	city
+, 		state
+ORDER BY	COUNT(business_id) DESC
 ;
