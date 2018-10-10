@@ -1,0 +1,45 @@
+Taken from yelpdatabase round 12
+https://www.yelp.com/dataset/challenge
+
+4.1. Find business names whose zip code begins with '1' and ends with '1'. You can assume that zip code consists of five digits.
+4.2. Find the total number of checkin per business, which is located in 'NY' state. Sort by the total checkin number. Note that 
+the total number of checkin must be ZERO if there is no checkin (Hint: Check the mysql function 'IFNULL'). 
+4.3. Find the total number of restaurants per (city and state). Sort the numbers. It is not necessary to display all result.
+
+4.1a
+
+SELECT	yelp_academic_dataset_business.name, postal_code
+FROM 	yelp_academic_dataset_business
+WHERE	postal_code LIKE '1___1'
+;
+
+4.1b
+
+SELECT	yelp_academic_dataset_business.name, postal_code
+FROM 	yelp_academic_dataset_business
+WHERE	postal_code LIKE '1%1'
+;
+
+4.2
+
+SELECT 				yelp_academic_dataset_business.name
+, 					COUNT(yelp_academic_dataset_checkin.business_id)
+FROM					yelp_academic_dataset_business	
+	LEFT OUTER JOIN		yelp_academic_dataset_checkin
+	ON 	yelp_academic_dataset_business.business_id =
+		yelp_academic_dataset_checkin.business_id
+WHERE				yelp_academic_dataset_business.state = 'NY'
+GROUP BY				yelp_academic_dataset_business.name
+ORDER BY				COUNT(yelp_academic_dataset_checkin.business_id) DESC
+;
+
+4.3
+
+SELECT		city
+, 			state
+, 			COUNT(business_id) AS restaurant_count
+FROM			yelp_academic_dataset_business
+GROUP BY		city
+, 			state
+ORDER BY		COUNT(business_id) DESC
+;
