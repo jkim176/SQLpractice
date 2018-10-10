@@ -10,6 +10,9 @@ instructor.
 d. Find the lowest, across all departments, of the per-department maximum
 salary computed by the preceding query.
 
+2. Show how to define a view tot credits (year, num credits), giving the total
+number of credits taken by students in each year.
+
 classroom(building, room number, capacity)
 department(dept name, building, budget)
 course(course id, title, dept name, credits)
@@ -63,4 +66,16 @@ FROM	(
 	FROM			instructor
 	GROUP BY		dept_name
 	)
+;
+
+2.
+
+
+CREATE VIEW tot_credits AS
+	SELECT			takes.year
+	,			SUM(course.credits) AS num_credits
+	FROM			takes
+		NATURAL JOIN	course
+			ON	takes.course_id = course.course_id
+	GROUP BY		takes.year
 ;
