@@ -1,0 +1,79 @@
+Taken from MySQL employees practice database
+
+3.1. Find the all distinct titles.
+3.2. Find the average salaries per the title.
+3.3. Find the number of employees for each department.
+3.4. Find the numbers of Male/Female employees for each department.
+3.5. Find the highest salary and lowest salary for each department.
+
+3.1
+
+SELECT			DISTINCT title
+FROM				titles
+;
+
+3.2
+
+SELECT			titles.title
+,				AVG(salaries.salary) AS avg_salary
+FROM				titles
+	JOIN			salaries
+		ON		titles.emp_no = salaries.emp_no
+GROUP BY			titles.title
+;
+
+3.3
+
+SELECT			dept_name
+,				COUNT(employees.emp_no)
+FROM				employees
+	LEFT JOIN 		dept_emp
+		ON		employees.emp_no = dept_emp.emp_no
+	JOIN			departments
+		ON		dept_emp.dept_no = departments.dept_no
+GROUP BY			dept_name
+;
+
+3.4
+
+SELECT				*
+FROM			(	SELECT			dept_name
+	,				COUNT(employees.emp_no) AS Male_Emp
+	FROM				employees
+		LEFT JOIN 		dept_emp
+			ON		employees.emp_no = dept_emp.emp_no
+		JOIN			departments
+			ON		dept_emp.dept_no = departments.dept_no
+	WHERE			gender = 'M'
+	GROUP BY			dept_name
+	) AS Male_Count
+    
+	NATURAL JOIN
+    
+(	SELECT			dept_name
+	,				COUNT(employees.emp_no) AS Female_Emp
+	FROM				employees
+		LEFT JOIN 		dept_emp
+			ON		employees.emp_no = dept_emp.emp_no
+		JOIN			departments
+			ON		dept_emp.dept_no = departments.dept_no
+	WHERE			gender = 'F'
+	GROUP BY			dept_name
+	) AS Female_Count
+;
+
+3.5
+
+SELECT			dept_name
+,				MAX(salary) AS highest_salary
+,				MIN(salary) AS lowest_salary
+FROM			(	SELECT			emp_no
+	,				salary
+	FROM				salaries
+	WHERE			to_date = '9999-01-01'
+	) AS Current_Salaries
+	    	NATURAL JOIN 	dept_emp
+	NATURAL JOIN	departments
+GROUP BY			dept_name
+ORDER BY			dept_name
+;
